@@ -34,12 +34,13 @@ export default class App extends React.Component {
     } else if (calcValue == "=") {
 
       postCalculation(this.state.value).then(res => {
-        this.setState({
-          value: "",
-          answer: res.answer,
-          displayAnswer: true
-        });
-
+        if (res) {
+          this.setState({
+            value: "",
+            answer: res.answer,
+            displayAnswer: true
+          });
+        }
         getCalcHistory().then(res => {
           this.setState({ history: res });
         })
@@ -61,7 +62,7 @@ export default class App extends React.Component {
   render() {
     let history;
 
-    if (this.state.history) {
+    if (this.state.history > 0) {
       history = [...this.state.history].reverse();
     }
     return (
@@ -99,9 +100,9 @@ export default class App extends React.Component {
             <Button value='+' onButtonPress={this.handleValue} />
           </div>
         </div>
-        <div style={{ height: 400, width: 400, position: 'relative', border:"#FFFFFF solid black", borderRadius:30 }}>
+        <div style={{ height: 400, width: 400, position: 'relative', border: "#FFFFFF solid black", borderRadius: 30 }}>
           <h2>History</h2>
-          <div style={{ position: 'absolute', bottom:0, left:0, right:0,  alignItems: "center" }}>
+          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, alignItems: "center" }}>
             <PaginationList
               data={history}
               pageSize={4}
